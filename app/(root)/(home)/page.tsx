@@ -1,8 +1,26 @@
 import Filters from "@/components/Filters";
+import ResourceCard from "@/components/ResourceCard";
 import SearchForm from "@/components/SearchForm";
+import { getResources } from "@/sanity/actions";
 import React from "react";
 
-const Page = () => {
+interface Props {
+    _id: string;
+    title: string;
+    image: string;
+    views: number;
+    slug: string;
+}
+
+export const revalidate = 900;
+
+const Page = async () => {
+    const resources = await getResources({
+        query: "",
+        category: "",
+        page: "1",
+    });
+
     return (
         <main className="flex-center paddings mx-auto w-full max-w-screen-2xl flex-col">
             <section className="nav-padding w-full">
@@ -12,6 +30,27 @@ const Page = () => {
                 <SearchForm />
             </section>
             <Filters />
+
+            <section className="flex-center mt-6 w-full flex-col sm:mt-20">
+                Header
+                <div className="mt-12 flex w-full flex-wrap justify-center gap-16 sm:justify-start">
+                    {resources?.length > 0 ? (
+                        resources.map((resource: Props) => {
+                            return (
+                                <ResourceCard
+                                    key={resource._id}
+                                    title={resource.title}
+                                    id={resource._id}
+                                    image={resource.image}
+                                    views={resource.views}
+                                />
+                            );
+                        })
+                    ) : (
+                        <p className="body-regular text-white-400">Resource not found!</p>
+                    )}
+                </div>
+            </section>
         </main>
     );
 };
