@@ -29,7 +29,7 @@ export function buildQuery(params: BuildQueryParams) {
 }
 
 interface UrlQueryParams {
-    params: string; // from NextJS
+    params: string;
     key?: string;
     value?: string | null;
     keysToRemove?: string[];

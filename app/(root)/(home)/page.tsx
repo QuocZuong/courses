@@ -21,7 +21,7 @@ export const revalidate = 1;
 
 const Page = async ({ searchParams }: SearchProps) => {
     const resources = await getResources({
-        query: "",
+        query: searchParams?.query ?? "",
         category: searchParams?.category ?? "",
         page: "1",
     });
